@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// Justify takes a multiline string and justifies the text against the longest line.
+// Justify takes a multiline string and justifies the text to the specified length. The last line is not justified.
 func Justify(s string, maxLength int) string {
 	lines := strings.Split(s, "\n")
 
@@ -20,6 +20,7 @@ func Justify(s string, maxLength int) string {
 	return strings.Join(lines, "\n")
 }
 
+// justifyLine with determine how many spaces are needed and then applies the added spaces to a given line.
 func justifyLine(line string, length int) string {
 	spacesNeeded := length - len(line)
 	if spacesNeeded <= 0 {
@@ -45,6 +46,10 @@ func justifyLine(line string, length int) string {
 	return line
 }
 
+// getSpaces distributes the number of needed spaces across the known word space count.
+// See tests for examples. TL;DR: slotCount=3, spacesNeeded=10 => [3,4,3] which means
+// that the first token needs 3 spaces, the second needs 4, and the third needs 3 spaces.
+// The idea is to even spread out spaces, giving weight to the center of a line.
 func getSpaces(slotCount int, spacesNeeded int) []int {
 	// copy over indexes to prevent mutation
 	indexes := make([]int, slotCount)
